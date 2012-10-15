@@ -1,28 +1,36 @@
 #include"md5.hpp"
 #include<cstdlib>
 #include<cstring>
+#include<algorithm>
+#include<cmath>
 #include<ctime>
 #include<cstdio>
 #include<iostream>
 #include<fstream>
 using namespace std;
 
+const int BLOCK_SIZE = 2048;
+char buf[BLOCK_SIZE];
+
 int main(int argc, char**argv){
     MD5Sum md5;
-    char output[16];
-    string s;
-    char c;
     if(argc < 2) return 1;
+    // argv[1] specifies the input filename
     ifstream fin(argv[1]);
 
+    // get the file size
     fin.seekg(0, ios::end);
-    int fsize = fin.tellg();
+    uLL fsize = fin.tellg();
     fin.seekg(0, ios::beg);
-    s.resize(fsize);
-    fin.read(&s[0], fsize);
-    // empty string output should be: d41d8cd98f00b204e9800998ecf8427e
-    md5.encode((char*)s.c_str(), s.size(), output);
-    int i;
-    For(i, 16) printf("%02x", int(((int)output[i] + 256) % 256));
+
+    // read the file, BLOCK_SIZE bytes per time
+    uLL p, readsize;
+    for(p = 0; p < fsize; p += BLOCK_SIZE){
+        readsize = min(fsize - p, (uLL)BLOCK_SIZE);
+        fin.read(buf, readsize);
+        md5.update(buf, readsize);
+    }
+    fin.close();
+    cout << md5.hexdigest();
     return 0;
 }

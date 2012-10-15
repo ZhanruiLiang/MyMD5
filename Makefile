@@ -1,4 +1,4 @@
-CCFLAG=-DNDEBUG -O3
+CCFLAG=-DDEBUG -g
 CC=g++
 md5sum: md5.o md5sum.o
 	$(CC) $(CCFLAG) md5.o md5sum.o -o md5sum

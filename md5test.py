@@ -5,7 +5,6 @@ import md5
 import subprocess as sb
 
 alphabet = [chr(i) for i in xrange(33, 256)]
-print alphabet
 def randstr(maxlen=10000):
     return ''.join(random.choice(alphabet) for i in xrange(maxlen))
 
@@ -28,7 +27,7 @@ def test(s):
 def main():
     test("")
     test("a")
-    n = 10
+    n = 100
     p = 0
     for i in xrange(n):
         s = randstr(10000)
